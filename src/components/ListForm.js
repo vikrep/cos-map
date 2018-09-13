@@ -1,0 +1,35 @@
+import React, { Component } from 'react';
+import { Table, Button, TableBody, TableRow, TableCell, Icon, Popup, Container } from 'semantic-ui-react'
+
+
+class ListForm extends Component {
+
+    render() {
+        return (
+            <div>
+                <Table>
+                    <TableBody>
+                        {this.props.listform.map((newdata, i) =>
+                            <TableRow key={`list-row-${i}`}>
+                                <TableCell>
+                                    <Container text>
+                                        <p>{`Name: ${this.props.listform[i].name}, Address: ${this.props.listform[i].street_address}, City: ${this.props.listform[i].city}, County:  ${this.props.listform[i].county},
+                                    Postcode:  ${this.props.listform[i].post_code}, E-mail:  ${this.props.listform[i].email} `}</p>
+                                    </Container>
+                                    <Popup
+                                        trigger={<Button floated="right" icon className="delete" onClick={() => this.props.handleDeleteRow(i)}><Icon name='trash alternate' /></Button>}
+                                        content="Delete this track"
+                                    />
+
+                                </TableCell>
+                            </TableRow>)
+                        }
+                    </TableBody>
+                </Table>
+            </div>
+
+        )
+    }
+}
+
+export default ListForm;

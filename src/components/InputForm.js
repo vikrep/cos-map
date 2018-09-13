@@ -1,12 +1,12 @@
 import React from 'react'
-import { Button, Form, FormInput, Grid, GridRow, GridColumn } from 'semantic-ui-react'
+import { Button, Form, FormInput, Grid, GridRow, GridColumn, Divider } from 'semantic-ui-react'
 import './styles/inputform.css'
-
+import ListForm from './ListForm'
 class InputForm extends React.Component {
 
     constructor(props) {
         super(props)
-      
+
         this.state = {
             temp_address: this.initialState(),
             address: []
@@ -15,6 +15,7 @@ class InputForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleDeleteRow = this.handleDeleteRow.bind(this)
     }
     initialState() {
         return {
@@ -29,7 +30,7 @@ class InputForm extends React.Component {
             theatre: '',
             googleMapLink: ''
         }
-      }
+    }
 
     handleChange(event) {
         let newstate = this.state.temp_address
@@ -37,10 +38,14 @@ class InputForm extends React.Component {
         this.setState({ temp_address: newstate })
     }
 
+    // Handler for deleting listform row
+    handleDeleteRow = (i) => {
+        this.setState((prevState) => ({ address: prevState.address.filter((item, index) => (i !== index)) }))
+    }
     handleSubmit(event) {
         event.preventDefault()
-              this.setState({ address: this.state.address.concat(this.state.temp_address) });
-              this.setState({temp_address: this.initialState()})
+        this.setState({ address: this.state.address.concat(this.state.temp_address) });
+        this.setState({ temp_address: this.initialState() })
 
     }
 
@@ -108,6 +113,8 @@ class InputForm extends React.Component {
                                     onChange={this.handleChange} />
                                 <Button onSubmit={this.handleSubmit}>Submit</Button>
                             </Form>
+                            <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
+                            <ListForm listform={this.state.address} handleDeleteRow={this.handleDeleteRow} />
                         </GridColumn>
                     </GridRow>
                 </Grid>
