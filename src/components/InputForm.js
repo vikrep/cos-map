@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Form, FormInput, Grid, GridRow, GridColumn, Divider } from 'semantic-ui-react'
+import { Button, Form, FormInput, Grid, GridRow, GridColumn, Divider, Popup } from 'semantic-ui-react'
 import './styles/inputform.css'
 import ListForm from './ListForm'
 class InputForm extends React.Component {
@@ -111,7 +111,10 @@ class InputForm extends React.Component {
                                     value={this.state.temp_address.theatre}
                                     placeholder={"Theatre"}
                                     onChange={this.handleChange} />
-                                <Button onSubmit={this.handleSubmit}>Submit</Button>
+                                <Popup
+                                    trigger={<Button onSubmit={this.handleSubmit}>Save record</Button>}
+                                    content="Save this record to list"
+                                />
                             </Form>
                             <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
                             <ListForm listform={this.state.address} handleDeleteRow={this.handleDeleteRow} />

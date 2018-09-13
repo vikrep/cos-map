@@ -18,7 +18,7 @@ class ListForm extends Component {
                                     </Container>
                                     <Popup
                                         trigger={<Button floated="right" icon className="delete" onClick={() => this.props.handleDeleteRow(i)}><Icon name='trash alternate' /></Button>}
-                                        content="Delete this track"
+                                        content="Delete this line"
                                     />
 
                                 </TableCell>
