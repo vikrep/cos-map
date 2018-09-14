@@ -2,6 +2,14 @@ import React from 'react'
 import { Button, Form, FormInput, Grid, GridRow, GridColumn, Divider, Popup } from 'semantic-ui-react'
 import './styles/inputform.css'
 import ListForm from './ListForm'
+import firebase from 'firebase'
+import { config } from './config/firebase.js'
+
+
+
+firebase.initializeApp(config);
+
+
 class InputForm extends React.Component {
 
     constructor(props) {
@@ -32,7 +40,7 @@ class InputForm extends React.Component {
         }
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         let newstate = this.state.temp_address
         newstate[event.target.name] = event.target.value
         this.setState({ temp_address: newstate })
@@ -46,7 +54,9 @@ class InputForm extends React.Component {
         event.preventDefault()
         this.setState({ address: this.state.address.concat(this.state.temp_address) });
         this.setState({ temp_address: this.initialState() })
-
+    }
+    handleSend = () => {
+        firebase.database().ref('address/').set(this.state.address);
     }
 
     render() {
@@ -118,6 +128,11 @@ class InputForm extends React.Component {
                             </Form>
                             <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
                             <ListForm listform={this.state.address} handleDeleteRow={this.handleDeleteRow} />
+                            <Divider horizontal></Divider>
+                            <Popup
+                                trigger={<Button onClick={this.handleSend}>Send record</Button>}
+                                content="Send this record to database"
+                            />
                         </GridColumn>
                     </GridRow>
                 </Grid>
