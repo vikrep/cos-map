@@ -9,7 +9,6 @@ class Map extends Component {
                 <h2>Here should be Map</h2>
                 <Link to="/form"><Button floated="center" color="blue">Go to Form Data</Button></Link>
             </div>
-
         )
     }
 }

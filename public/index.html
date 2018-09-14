@@ -1,55 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>City of Sanctuary Map</title>
-  
-  <style>
-    #map{
-      height:800px;
-      width:100%;
-    }
-  </style>
+
 </head>
+
 <body>
-  <h1>Map of City of Sanctuary Groups</h1>
-  <div id="map"></div>
-  <script>
-    function initMap(){
-      // Map options
-      var options = {
-        zoom:8,
-        center:{lat: 53.5500  ,lng:-2.4333},
-        
-      }
 
-      // New map
-      var map = new google.maps.Map(document.getElementById('map'), options);
+  <div id="root"></div>
 
-      var markerimage = { url: 'https://cityofsanctuary.org/wp-content/uploads/2018/09/8506DB46-675C-48E8-9081-C4672BF226D6.png',
-      
-       size: new google.maps.Size(45, 46),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(15, 15)
-    };
-
-      
-      
-      // Add marker
-      var marker = new google.maps.Marker({
-        position:{lat:53.485905,lng:-2.242330},
-        map:map,
-       icon : markerimage
-       });
-
-      
-    }
-  </script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABOjnelZLO8q-aXeo_lz1rCr2F6N3icP4&callback=initMap">
-    </script>
 </body>
+
 </html>
