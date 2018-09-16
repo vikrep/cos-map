@@ -4,10 +4,15 @@ import './styles/inputform.css'
 import ListForm from './ListForm'
 import firebase from 'firebase'
 import { config } from './config/firebase.js'
+require("firebase/firestore");
 
 
 
 firebase.initializeApp(config);
+var db = firebase.firestore();
+db.settings({
+    timestampsInSnapshots: true
+});
 
 
 class InputForm extends React.Component {
@@ -19,7 +24,6 @@ class InputForm extends React.Component {
             temp_address: this.initialState(),
             address: []
         }
-        this.autocomplete = null
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -40,6 +44,24 @@ class InputForm extends React.Component {
         }
     }
 
+    handleLoad = () => {
+        var arrayOfaddress = []
+        db.collection("City of Sanctuar")
+        .get()
+        .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+                let newelement = { id: doc.id }
+                let obj = doc.data()
+                obj = { ...obj, ...newelement }
+                arrayOfaddress.push(obj)
+            });
+        })
+        .then(this.setState({ address: arrayOfaddress }))
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
+    }
+
     handleChange = (event) => {
         let newstate = this.state.temp_address
         newstate[event.target.name] = event.target.value
@@ -50,13 +72,21 @@ class InputForm extends React.Component {
     handleDeleteRow = (i) => {
         this.setState((prevState) => ({ address: prevState.address.filter((item, index) => (i !== index)) }))
     }
-    handleSubmit(event) {
+    handleSubmit = (event) => {
         event.preventDefault()
         this.setState({ address: this.state.address.concat(this.state.temp_address) });
         this.setState({ temp_address: this.initialState() })
     }
     handleSend = () => {
-        firebase.database().ref('address/').set(this.state.address);
+        db.collection("City of Sanctuar").add(
+            this.state.temp_address
+        )
+            .then(function (docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function (error) {
+                console.error("Error adding document: ", error);
+            });
     }
 
     render() {
@@ -132,6 +162,10 @@ class InputForm extends React.Component {
                             <Popup
                                 trigger={<Button onClick={this.handleSend}>Send record</Button>}
                                 content="Send this record to database"
+                            />
+                            <Popup
+                                trigger={<Button onClick={this.handleLoad}>Load records</Button>}
+                                content="Load records from database"
                             />
                         </GridColumn>
                     </GridRow>
