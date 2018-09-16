@@ -7,7 +7,6 @@ import { config } from './config/firebase.js'
 require("firebase/firestore");
 
 
-
 firebase.initializeApp(config);
 var db = firebase.firestore();
 db.settings({
@@ -22,12 +21,17 @@ class InputForm extends React.Component {
 
         this.state = {
             temp_address: this.initialState(),
-            address: []
+            address: [],
+            isEdit: false,
+            id: ''
         }
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
         this.handleDeleteRow = this.handleDeleteRow.bind(this)
+        this.handleLoad = this.handleLoad.bind(this)
+        this.handleEdit = this.handleEdit.bind(this)
     }
     initialState() {
         return {
@@ -46,51 +50,89 @@ class InputForm extends React.Component {
     componentDidMount() {
         this.handleLoad()
     }
+
     handleLoad = () => {
         let arrayOfaddress = []
         db.collection("City of Sanctuar")
             .get()
-            .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    let newelement = { id: doc.id }
-                    let obj = doc.data()
-                    obj = { ...obj, ...newelement }
-                    arrayOfaddress.push(obj)
+            .then(
+                function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        let newelement = { id: doc.id }
+                        let obj = doc.data()
+                        obj = { ...obj, ...newelement }
+                        arrayOfaddress.push(obj)
+                    });
+                })
+            .then(
+                () => {
+                    this.setState({ address: arrayOfaddress })
+                })
+            .catch(
+                function (error) {
+                    console.log("Error getting documents: ", error);
                 });
-            })
-            .then(() => { this.setState({ address: arrayOfaddress }) })
-            .catch(function (error) {
-                console.log("Error getting documents: ", error);
-            });
     }
 
     handleChange = (event) => {
-        let newstate = this.state.temp_address
-        newstate[event.target.name] = event.target.value
-        this.setState({ temp_address: newstate })
-    }
-
-    // Handler for deleting listform row
-    handleDeleteRow = (i) => {
-        this.setState((prevState) => ({ address: prevState.address.filter((item, index) => (i !== index)) }))
-    }
-    handleSubmit = (event) => {
-        event.preventDefault()
-        this.setState({ address: this.state.address.concat(this.state.temp_address) });
-        this.setState({ temp_address: this.initialState() })
-        this.handleSend()
+        let newdata = this.state.temp_address
+        newdata[event.target.name] = event.target.value
+        this.setState({ temp_address: newdata })
 
     }
-    handleSend = () => {
-        db.collection("City of Sanctuar").add(
-            this.state.temp_address
-        )
-            .then(function (docRef) {
-                console.log("Document written with ID: ", docRef.id);
+
+    handleDeleteRow = (id) => {
+        db.collection("City of Sanctuar").doc(id).delete()
+            .then(
+                function () {
+                    console.log("Document successfully deleted!");
+                })
+            .catch(
+                function (error) {
+                    console.error("Error removing document: ", error);
+                });
+    }
+
+    handleEdit = (id) => {
+        let obj = {}
+        db.collection("City of Sanctuar").doc(id).get()
+            .then(function (doc) {
+                if (doc.exists) { obj = doc.data() }
+                else { console.log("No such document!") }
             })
-            .catch(function (error) {
-                console.error("Error adding document: ", error);
-            });
+            .then(
+                () => {
+                    this.setState({ temp_address: obj, isEdit: true, id: id })
+                })
+            .catch(
+                function (error) {
+                    console.log("Error getting document:", error);
+                });
+    }
+
+    handleSubmit = () => {  
+            db.collection("City of Sanctuar").add(this.state.temp_address)
+                .then(
+                    function (docRef) {
+                        console.log("Document written with ID: ", docRef.id);
+                    })
+                .catch(
+                    function (error) {
+                        console.error("Error adding document: ", error);
+                    });
+        this.setState({ temp_address: this.initialState() })
+    }
+
+    handleSubmitEdit = () => {
+        console.log(this.state.id)
+        db.collection("City of Sanctuar").doc(this.state.id).set(this.state.temp_address)
+            .then(() => {
+                this.setState({ id: "", isEdit: false, temp_address: this.initialState() })
+            })
+            .catch(
+                function (error) {
+                    console.error("Error adding document: ", error);
+                });
     }
 
     render() {
@@ -100,7 +142,7 @@ class InputForm extends React.Component {
                 <Grid>
                     <GridRow centered>
                         <GridColumn width={6}>
-                            <Form onSubmit={this.handleSubmit}>
+                            <Form>
                                 <FormInput
                                     type="text"
                                     name={"name"}
@@ -155,13 +197,17 @@ class InputForm extends React.Component {
                                     value={this.state.temp_address.theatre}
                                     placeholder={"Theatre"}
                                     onChange={this.handleChange} />
-                                <Popup
-                                    trigger={<Button onSubmit={this.handleSubmit}>Save record</Button>}
-                                    content="Save this record to DataBase"
-                                />
+                                {!this.state.isEdit ? (<Popup
+                                    trigger={<Button onClick={this.handleSubmit}>Submit</Button>}
+                                    content="Submit new record to DataBase"
+                                />) : (<Popup
+                                    trigger={<Button onClick={this.handleSubmitEdit}>Save</Button>}
+                                    content="Save edited record to DataBase"
+                                />)}
+                               
                             </Form>
                             <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
-                            <ListForm listform={this.state.address} handleDeleteRow={this.handleDeleteRow} />
+                            <ListForm listform={this.state.address} handleEdit={this.handleEdit} handleDeleteRow={this.handleDeleteRow} />
                             <Divider horizontal></Divider>
                         </GridColumn>
                     </GridRow>
