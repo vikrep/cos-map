@@ -43,23 +43,25 @@ class InputForm extends React.Component {
             googleMapLink: ''
         }
     }
-
+    componentDidMount() {
+        this.handleLoad()
+    }
     handleLoad = () => {
-        var arrayOfaddress = []
+        let arrayOfaddress = []
         db.collection("City of Sanctuar")
-        .get()
-        .then(function (querySnapshot) {
-            querySnapshot.forEach(function (doc) {
-                let newelement = { id: doc.id }
-                let obj = doc.data()
-                obj = { ...obj, ...newelement }
-                arrayOfaddress.push(obj)
+            .get()
+            .then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    let newelement = { id: doc.id }
+                    let obj = doc.data()
+                    obj = { ...obj, ...newelement }
+                    arrayOfaddress.push(obj)
+                });
+            })
+            .then(() => { this.setState({ address: arrayOfaddress }) })
+            .catch(function (error) {
+                console.log("Error getting documents: ", error);
             });
-        })
-        .then(this.setState({ address: arrayOfaddress }))
-        .catch(function(error) {
-            console.log("Error getting documents: ", error);
-        });
     }
 
     handleChange = (event) => {
@@ -76,6 +78,8 @@ class InputForm extends React.Component {
         event.preventDefault()
         this.setState({ address: this.state.address.concat(this.state.temp_address) });
         this.setState({ temp_address: this.initialState() })
+        this.handleSend()
+
     }
     handleSend = () => {
         db.collection("City of Sanctuar").add(
@@ -153,20 +157,12 @@ class InputForm extends React.Component {
                                     onChange={this.handleChange} />
                                 <Popup
                                     trigger={<Button onSubmit={this.handleSubmit}>Save record</Button>}
-                                    content="Save this record to list"
+                                    content="Save this record to DataBase"
                                 />
                             </Form>
                             <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
                             <ListForm listform={this.state.address} handleDeleteRow={this.handleDeleteRow} />
                             <Divider horizontal></Divider>
-                            <Popup
-                                trigger={<Button onClick={this.handleSend}>Send record</Button>}
-                                content="Send this record to database"
-                            />
-                            <Popup
-                                trigger={<Button onClick={this.handleLoad}>Load records</Button>}
-                                content="Load records from database"
-                            />
                         </GridColumn>
                     </GridRow>
                 </Grid>
