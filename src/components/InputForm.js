@@ -30,7 +30,6 @@ class InputForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
         this.handleDeleteRow = this.handleDeleteRow.bind(this)
-        this.handleLoad = this.handleLoad.bind(this)
         this.handleEdit = this.handleEdit.bind(this)
     }
     initialState() {
@@ -52,30 +51,18 @@ class InputForm extends React.Component {
         }
     }
     componentDidMount() {
-        this.handleLoad()
-    }
-
-    handleLoad = () => {
         let arrayOfaddress = []
         db.collection("City of Sanctuar")
-            .get()
-            .then(
-                function (querySnapshot) {
+            .onSnapshot(
+                querySnapshot => {
                     querySnapshot.forEach(function (doc) {
                         let newelement = { id: doc.id }
                         let obj = doc.data()
                         obj = { ...obj, ...newelement }
                         arrayOfaddress.push(obj)
                     });
-                })
-            .then(
-                () => {
-                    this.setState({ address: arrayOfaddress })
-                })
-            .catch(
-                function (error) {
-                    console.log("Error getting documents: ", error);
-                });
+                    this.setState({ address: arrayOfaddress }, () => {arrayOfaddress = []})
+                })                 
     }
 
     handleChange = (event) => {
