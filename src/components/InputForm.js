@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Form, FormInput, Grid, GridRow, GridColumn, Divider, Popup } from 'semantic-ui-react'
+import { Button, Form, FormInput, Grid, GridRow, GridColumn, Divider, Popup, FormGroup } from 'semantic-ui-react'
 import './styles/inputform.css'
 import ListForm from './ListForm'
 import firebase from 'firebase'
@@ -44,7 +44,11 @@ class InputForm extends React.Component {
             schools: '',
             universites: '',
             theatre: '',
-            googleMapLink: ''
+            shop: '',
+            description: '',
+            latitude: '',
+            longitude: '',
+
         }
     }
     componentDidMount() {
@@ -110,16 +114,16 @@ class InputForm extends React.Component {
                 });
     }
 
-    handleSubmit = () => {  
-            db.collection("City of Sanctuar").add(this.state.temp_address)
-                .then(
-                    function (docRef) {
-                        console.log("Document written with ID: ", docRef.id);
-                    })
-                .catch(
-                    function (error) {
-                        console.error("Error adding document: ", error);
-                    });
+    handleSubmit = () => {
+        db.collection("City of Sanctuar").add(this.state.temp_address)
+            .then(
+                function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+            .catch(
+                function (error) {
+                    console.error("Error adding document: ", error);
+                });
         this.setState({ temp_address: this.initialState() })
     }
 
@@ -149,54 +153,82 @@ class InputForm extends React.Component {
                                     value={this.state.temp_address.name}
                                     placeholder={"Name"}
                                     onChange={this.handleChange} />
-                                <FormInput
-                                    type="text"
-                                    name={"street_address"}
-                                    value={this.state.temp_address.street_address}
-                                    placeholder={"Street Address"}
-                                    onChange={this.handleChange} />
-                                <FormInput
-                                    type="text"
-                                    name={"city"}
-                                    value={this.state.temp_address.city}
-                                    placeholder={"City"}
-                                    onChange={this.handleChange} />
-                                <FormInput
-                                    type="text"
-                                    name={"county"}
-                                    value={this.state.temp_address.county}
-                                    placeholder={"County"}
-                                    onChange={this.handleChange} />
-                                <FormInput
-                                    type="text"
-                                    name={"post_code"}
-                                    value={this.state.temp_address.post_code}
-                                    placeholder={"Postcode"}
-                                    onChange={this.handleChange} />
+                                <FormGroup widths='equal'>
+                                    <FormInput
+                                        type="text"
+                                        name={"street_address"}
+                                        value={this.state.temp_address.street_address}
+                                        placeholder={"Street Address"}
+                                        onChange={this.handleChange} />
+                                    <FormInput
+                                        type="text"
+                                        name={"city"}
+                                        value={this.state.temp_address.city}
+                                        placeholder={"City"}
+                                        onChange={this.handleChange} />
+                                </FormGroup >
+                                <FormGroup widths='equal'>
+                                    <FormInput
+                                        type="text"
+                                        name={"county"}
+                                        value={this.state.temp_address.county}
+                                        placeholder={"County"}
+                                        onChange={this.handleChange} />
+                                    <FormInput
+                                        type="text"
+                                        name={"post_code"}
+                                        value={this.state.temp_address.post_code}
+                                        placeholder={"Postcode"}
+                                        onChange={this.handleChange} />
+                                </FormGroup>
+                                <FormGroup widths='equal'>
+                                    <FormInput
+                                        type="text"
+                                        name={"latitude"}
+                                        value={this.state.temp_address.latitude}
+                                        placeholder={"Latitude"}
+                                        onChange={this.handleChange} />
+                                    <FormInput
+                                        type="text"
+                                        name={"longitude"}
+                                        value={this.state.temp_address.longitude}
+                                        placeholder={"Longitude"}
+                                        onChange={this.handleChange} />
+                                </FormGroup>
                                 <FormInput
                                     type="text"
                                     name={"email"}
                                     value={this.state.temp_address.email}
                                     placeholder={"E-mail:"}
                                     onChange={this.handleChange} />
-                                <FormInput
-                                    type="number" min={1}
-                                    name={"schools"}
-                                    value={this.state.temp_address.schools}
-                                    placeholder={"Schools"}
-                                    onChange={this.handleChange} />
-                                <FormInput
-                                    type="number" min={1}
-                                    name={"universites"}
-                                    value={this.state.temp_address.universites}
-                                    placeholder={"Universites"}
-                                    onChange={this.handleChange} />
-                                <FormInput
-                                    type="number" min={1}
-                                    name={"theatre"}
-                                    value={this.state.temp_address.theatre}
-                                    placeholder={"Theatre"}
-                                    onChange={this.handleChange} />
+                                <FormGroup widths='equal'>
+                                    <FormInput
+                                        type="number" min={1}
+                                        name={"schools"}
+                                        value={this.state.temp_address.schools}
+                                        placeholder={"Schools"}
+                                        onChange={this.handleChange} />
+                                    <FormInput
+                                        type="number" min={1}
+                                        name={"universites"}
+                                        value={this.state.temp_address.universites}
+                                        placeholder={"Universites"}
+                                        onChange={this.handleChange} />
+                                </FormGroup>
+                                <FormGroup widths='equal'>
+                                    <FormInput
+                                        type="number" min={1}
+                                        name={"theatre"}
+                                        value={this.state.temp_address.theatre}
+                                        placeholder={"Theatre"}
+                                        onChange={this.handleChange} />
+                                    <FormInput
+                                        type="number" min={1}
+                                        name={"shop"}
+                                        value={this.state.temp_address.shop}
+                                        placeholder={"Shop"}
+                                        onChange={this.handleChange} />
+                                </FormGroup>
                                 {!this.state.isEdit ? (<Popup
                                     trigger={<Button onClick={this.handleSubmit}>Submit</Button>}
                                     content="Submit new record to DataBase"
@@ -204,7 +236,7 @@ class InputForm extends React.Component {
                                     trigger={<Button onClick={this.handleSubmitEdit}>Save</Button>}
                                     content="Save edited record to DataBase"
                                 />)}
-                               
+
                             </Form>
                             <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
                             <ListForm listform={this.state.address} handleEdit={this.handleEdit} handleDeleteRow={this.handleDeleteRow} />
