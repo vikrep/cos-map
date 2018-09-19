@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 import { compose, withProps } from "recompose";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
-import { API_GOOGLE } from './config/googleApi.js'
+//you should add your API_key and put this line to /source/components/config/googleApi.js
+import { API_GOOGLE } from './config/googleApi.js' 
+
 
 const MyMapComponent = compose(
     withProps({
         googleMapURL: API_GOOGLE,
-        loadingElement: <div style={{ height: `90%` }} />,
+        loadingElement: <div style={{ height: `100%` }} />,
         containerElement: <div style={{ height: `400px` }} />,
         mapElement: <div style={{ height: `100%` }} />
     }),

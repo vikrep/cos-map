@@ -6,13 +6,22 @@ import firebase from 'firebase'
 import { config } from './config/firebase.js'
 require("firebase/firestore");
 
+//---add this config with your data to src/components/config/firebase.js---
+//  export var config = {
+//     apiKey: "YOUR_PROJECT_API_KEY",
+//     authDomain: "YOUR_PROJET_DOMAIN",
+//     databaseURL: "YOUR_DATABASE_URL",
+//     projectId: "YOUR_PROJECT_ID",
+//     storageBucket: "YOUR_BUCKET",
+//     messagingSenderId: "YOUR_ID"
+// };
 
+// initialize Firestore
 firebase.initializeApp(config);
 var db = firebase.firestore();
 db.settings({
     timestampsInSnapshots: true
 });
-
 
 class InputForm extends React.Component {
 
@@ -50,6 +59,8 @@ class InputForm extends React.Component {
 
         }
     }
+
+    // Loading data from Firestore every render
     componentDidMount() {
         let arrayOfaddress = []
         db.collection("City of Sanctuar")
@@ -65,13 +76,14 @@ class InputForm extends React.Component {
                 })                 
     }
 
+    // Handle function to update input form
     handleChange = (event) => {
         let newdata = this.state.temp_address
         newdata[event.target.name] = event.target.value
         this.setState({ temp_address: newdata })
 
     }
-
+    // Handle function to delete one document from Firebase collection by doc.id
     handleDeleteRow = (id) => {
         db.collection("City of Sanctuar").doc(id).delete()
             .then(
@@ -83,7 +95,7 @@ class InputForm extends React.Component {
                     console.error("Error removing document: ", error);
                 });
     }
-
+    // Handle function to load one document by doc.id from Firebase collection and put it to input form for edit
     handleEdit = (id) => {
         let obj = {}
         db.collection("City of Sanctuar").doc(id).get()
@@ -100,7 +112,7 @@ class InputForm extends React.Component {
                     console.log("Error getting document:", error);
                 });
     }
-
+    // Handle function to create new document in Firebase collection
     handleSubmit = () => {
         db.collection("City of Sanctuar").add(this.state.temp_address)
             .then(
@@ -113,9 +125,8 @@ class InputForm extends React.Component {
                 });
         this.setState({ temp_address: this.initialState() })
     }
-
+    // Handle function to update/rewrite one document in Firebase collection by doc.id
     handleSubmitEdit = () => {
-        console.log(this.state.id)
         db.collection("City of Sanctuar").doc(this.state.id).set(this.state.temp_address)
             .then(() => {
                 this.setState({ id: "", isEdit: false, temp_address: this.initialState() })
@@ -223,7 +234,6 @@ class InputForm extends React.Component {
                                     trigger={<Button onClick={this.handleSubmitEdit}>Save</Button>}
                                     content="Save edited record to DataBase"
                                 />)}
-
                             </Form>
                             <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
                             <ListForm listform={this.state.address} handleEdit={this.handleEdit} handleDeleteRow={this.handleDeleteRow} />
