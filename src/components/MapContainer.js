@@ -84,7 +84,7 @@ class MapContainer extends Component {
                 <MyMapComponent isMarkerShown={this.state.isMarkerShown}
                     address={this.state.address} showInfo={this.showInfo}
                     showInfoIndex={this.state.showInfoIndex} />
-                <Link to="/form"><Button floated="right" color="blue">Go to Form Data</Button></Link>
+                <Link to="/form"><Button color="blue">Go to Form Data</Button></Link>
             </div>
         )
     }
