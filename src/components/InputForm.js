@@ -73,7 +73,7 @@ class InputForm extends React.Component {
                         arrayOfaddress.push(obj)
                     });
                     this.setState({ address: arrayOfaddress }, () => {arrayOfaddress = []})
-                })                 
+                })                          
     }
 
     // Handle function to update input form
@@ -114,6 +114,7 @@ class InputForm extends React.Component {
     }
     // Handle function to create new document in Firebase collection
     handleSubmit = () => {
+        
         db.collection("City of Sanctuar").add(this.state.temp_address)
             .then(
                 function (docRef) {
@@ -151,6 +152,12 @@ class InputForm extends React.Component {
                                     value={this.state.temp_address.name}
                                     placeholder={"Name"}
                                     onChange={this.handleChange} />
+                                    <FormInput
+                                    type="text"
+                                    name={"description"}
+                                    value={this.state.temp_address.description}
+                                    placeholder={"Group descrciption"}
+                                    onChange={this.handleChange} />
                                 <FormGroup widths='equal'>
                                     <FormInput
                                         type="text"
@@ -180,18 +187,20 @@ class InputForm extends React.Component {
                                         onChange={this.handleChange} />
                                 </FormGroup>
                                 <FormGroup widths='equal'>
-                                    <FormInput
+                                    <Form.Input
                                         type="text"
                                         name={"latitude"}
                                         value={this.state.temp_address.latitude}
                                         placeholder={"Latitude"}
-                                        onChange={this.handleChange} />
-                                    <FormInput
+                                        onChange={this.handleChange}
+                                        required />
+                                    <Form.Input
                                         type="text"
                                         name={"longitude"}
                                         value={this.state.temp_address.longitude}
                                         placeholder={"Longitude"}
-                                        onChange={this.handleChange} />
+                                        onChange={this.handleChange}
+                                        required />
                                 </FormGroup>
                                 <FormInput
                                     type="text"

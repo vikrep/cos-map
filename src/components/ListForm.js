@@ -13,7 +13,7 @@ class ListForm extends Component {
                             <TableRow key={`list-row-${i}`}>
                                 <TableCell>
                                     <Container text>
-                                        <p>{`Name: ${this.props.listform[i].name}, Address: ${this.props.listform[i].street_address}, City: ${this.props.listform[i].city}, 
+                                        <p>{`Name: ${this.props.listform[i].name}, Group Description: ${this.props.listform[i].description}, Address: ${this.props.listform[i].street_address}, City: ${this.props.listform[i].city}, 
                                         Postcode: ${this.props.listform[i].post_code}, E-mail: ${this.props.listform[i].email}`}</p>
                                     </Container>
                                     <Popup
