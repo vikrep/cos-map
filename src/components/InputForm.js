@@ -33,6 +33,7 @@ class InputForm extends React.Component {
             address: [],
             isEdit: false,
             id: ''
+            
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -112,8 +113,20 @@ class InputForm extends React.Component {
                     console.log("Error getting document:", error);
                 });
     }
+
+    
     // Handle function to create new document in Firebase collection
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+e.preventDefault();
+       
+        if(this.state.latitude){
+            
+            
+            this.setState({latitude : true});
+            
+        } else{
+           alert ('Latitude field must be entered')
+        }
         
         db.collection("City of Sanctuar").add(this.state.temp_address)
             .then(
@@ -142,6 +155,7 @@ class InputForm extends React.Component {
         return (
             <div>
                 <h3>Add New City of Sanctuar</h3>
+                
                 <Grid>
                     <GridRow centered>
                         <GridColumn width={6}>
