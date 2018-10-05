@@ -14,7 +14,7 @@ db.settings({
     timestampsInSnapshots: true
 });
 
-const markericon = { url: 'https://cityofsanctuary.org/wp-content/uploads/2018/09/8506DB46-675C-48E8-9081-C4672BF226D6.png', size: { width: 45, height: 46 }, anchor: { x: 17, y: 34 }, scaledSize: { width: 15, height: 15 } }
+const markericon = { url: 'https://cityofsanctuary.org/wp-content/uploads/2018/09/8506DB46-675C-48E8-9081-C4672BF226D6.png', size: { width: 45, height: 46 }, anchor: { x: 17, y: 34 }, scaledSize: { width: 20, height: 20 } }
 const MyMapComponent = compose(
     withStateHandlers(() => ({
         isOpen: false,
@@ -25,13 +25,13 @@ const MyMapComponent = compose(
     withProps({
         googleMapURL: API_GOOGLE,
         loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `500px` }} />,
+        containerElement: <div style={{ height: `600px` }} />,
         mapElement: <div style={{ height: `100%` }} />
     }),
     withScriptjs,
     withGoogleMap
 )(props => (
-    <GoogleMap defaultZoom={6} defaultCenter={{ lat: 53.5500, lng: -2.4333 }}>
+    <GoogleMap defaultZoom={6} defaultCenter={{ lat: 53.6432, lng: -2.45790 }}>
         {props.isMarkerShown &&
             (props.address.map((marker, i) => (
                 <Marker
@@ -42,7 +42,7 @@ const MyMapComponent = compose(
                     {(props.showInfoIndex === i) &&
                         <InfoWindow key={`infowindow-${i}`} position={{ lat: parseFloat(props.address[i].latitude) }} onCloseClick={props.onToggleOpen}>
                             <div className="marker-text">
-                                <p>{`${props.address[i].name}, ${props.address[i].street_address},
+                                <p>{`${props.address[i].name},${props.address[i].description}, ${props.address[i].street_address},
                                     ${props.address[i].city}, ${props.address[i].post_code}`}
                                 </p></div>
                         </InfoWindow>}
