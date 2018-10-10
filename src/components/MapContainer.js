@@ -24,14 +24,14 @@ const MyMapComponent = compose(
         }),
     withProps({
         googleMapURL: API_GOOGLE,
-        loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `600px` }} />,
-        mapElement: <div style={{ height: `100%` }} />
+        loadingElement: <div style={{ height: `200%` }} />,
+        containerElement: <div style={{ height: `700px` }} />,
+        mapElement: <div style={{ height: `90%` }} />
     }),
     withScriptjs,
     withGoogleMap
 )(props => (
-    <GoogleMap defaultZoom={6} defaultCenter={{ lat: 53.6432, lng: -2.45790 }}>
+    <GoogleMap defaultZoom={5.5} defaultCenter={{ lat: 53.5500, lng: -2.4333 }}>
         {props.isMarkerShown &&
             (props.address.map((marker, i) => (
                 <Marker
@@ -42,8 +42,7 @@ const MyMapComponent = compose(
                     {(props.showInfoIndex === i) &&
                         <InfoWindow key={`infowindow-${i}`} position={{ lat: parseFloat(props.address[i].latitude) }} onCloseClick={props.onToggleOpen}>
                             <div className="marker-text">
-                                <p>{`${props.address[i].name},${props.address[i].description}, ${props.address[i].street_address},
-                                    ${props.address[i].city}, ${props.address[i].post_code}`}
+                                <p>{`${props.address[i].name},${props.address[i].description}`}
                                 </p></div>
                         </InfoWindow>}
                 </Marker>)))}

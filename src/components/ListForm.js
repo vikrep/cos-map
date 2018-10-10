@@ -17,11 +17,11 @@ class ListForm extends Component {
                                         Postcode: ${this.props.listform[i].post_code}, E-mail: ${this.props.listform[i].email}`}</p>
                                     </Container>
                                     <Popup
-                                        trigger={<Button floated="right" icon className="delete" onClick={() => this.props.handleDeleteRow(this.props.listform[i].id)}><Icon name='trash alternate' /></Button>}
+                                        trigger={<Button color = "red" floated="right" icon className="delete" onClick={() => this.props.handleDeleteRow(this.props.listform[i].id)}><Icon name='trash alternate' /></Button>}
                                         content="Delete this line"
                                     />
                                     <Popup
-                                        trigger={<Button floated="right" icon className="edit" onClick={() => this.props.handleEdit(this.props.listform[i].id)}><Icon name='edit' /></Button>}
+                                        trigger={<Button color = "linkedin" floated="right" icon className="edit" onClick={() => this.props.handleEdit(this.props.listform[i].id)}><Icon name='edit' /></Button>}
                                         content="Edit this line"
                                     />
 

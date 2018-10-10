@@ -154,7 +154,7 @@ e.preventDefault();
     render() {
         return (
             <div>
-                <h3>Add New City of Sanctuar</h3>
+                <h3>Add New City of Sanctuary</h3>
                 
                 <Grid>
                     <GridRow centered>
@@ -251,14 +251,14 @@ e.preventDefault();
                                         onChange={this.handleChange} />
                                 </FormGroup>
                                 {!this.state.isEdit ? (<Popup
-                                    trigger={<Button onClick={this.handleSubmit}>Submit</Button>}
+                                    trigger={<Button color = "linkedin" onClick={this.handleSubmit}>Submit</Button>}
                                     content="Submit new record to DataBase"
                                 />) : (<Popup
-                                    trigger={<Button onClick={this.handleSubmitEdit}>Save</Button>}
+                                    trigger={<Button color = "instagram" onClick={this.handleSubmitEdit}>Save</Button>}
                                     content="Save edited record to DataBase"
                                 />)}
                             </Form>
-                            <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
+                            <Divider  horizontal><h4>List of City of Sanctuary</h4></Divider>
                             <ListForm listform={this.state.address} handleEdit={this.handleEdit} handleDeleteRow={this.handleDeleteRow} />
                             <Divider horizontal></Divider>
                         </GridColumn>
