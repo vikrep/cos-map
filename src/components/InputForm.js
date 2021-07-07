@@ -33,6 +33,7 @@ class InputForm extends React.Component {
             address: [],
             isEdit: false,
             id: ''
+            
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -73,7 +74,7 @@ class InputForm extends React.Component {
                         arrayOfaddress.push(obj)
                     });
                     this.setState({ address: arrayOfaddress }, () => {arrayOfaddress = []})
-                })                 
+                })                          
     }
 
     // Handle function to update input form
@@ -112,8 +113,21 @@ class InputForm extends React.Component {
                     console.log("Error getting document:", error);
                 });
     }
+
+    
     // Handle function to create new document in Firebase collection
-    handleSubmit = () => {
+    handleSubmit = (e) => {
+e.preventDefault();
+       
+        if(this.state.latitude){
+            
+            
+            this.setState({latitude : true});
+            
+        } else{
+           alert ('Latitude field must be entered')
+        }
+        
         db.collection("City of Sanctuar").add(this.state.temp_address)
             .then(
                 function (docRef) {
@@ -140,7 +154,8 @@ class InputForm extends React.Component {
     render() {
         return (
             <div>
-                <h3>Add New City of Sanctuar</h3>
+                <h3>Add New City of Sanctuary</h3>
+                
                 <Grid>
                     <GridRow centered>
                         <GridColumn width={6}>
@@ -150,6 +165,12 @@ class InputForm extends React.Component {
                                     name={"name"}
                                     value={this.state.temp_address.name}
                                     placeholder={"Name"}
+                                    onChange={this.handleChange} />
+                                    <FormInput
+                                    type="text"
+                                    name={"description"}
+                                    value={this.state.temp_address.description}
+                                    placeholder={"Group descrciption"}
                                     onChange={this.handleChange} />
                                 <FormGroup widths='equal'>
                                     <FormInput
@@ -180,18 +201,20 @@ class InputForm extends React.Component {
                                         onChange={this.handleChange} />
                                 </FormGroup>
                                 <FormGroup widths='equal'>
-                                    <FormInput
+                                    <Form.Input
                                         type="text"
                                         name={"latitude"}
                                         value={this.state.temp_address.latitude}
                                         placeholder={"Latitude"}
-                                        onChange={this.handleChange} />
-                                    <FormInput
+                                        onChange={this.handleChange}
+                                        required />
+                                    <Form.Input
                                         type="text"
                                         name={"longitude"}
                                         value={this.state.temp_address.longitude}
                                         placeholder={"Longitude"}
-                                        onChange={this.handleChange} />
+                                        onChange={this.handleChange}
+                                        required />
                                 </FormGroup>
                                 <FormInput
                                     type="text"
@@ -228,14 +251,14 @@ class InputForm extends React.Component {
                                         onChange={this.handleChange} />
                                 </FormGroup>
                                 {!this.state.isEdit ? (<Popup
-                                    trigger={<Button onClick={this.handleSubmit}>Submit</Button>}
+                                    trigger={<Button color = "linkedin" onClick={this.handleSubmit}>Submit</Button>}
                                     content="Submit new record to DataBase"
                                 />) : (<Popup
-                                    trigger={<Button onClick={this.handleSubmitEdit}>Save</Button>}
+                                    trigger={<Button color = "instagram" onClick={this.handleSubmitEdit}>Save</Button>}
                                     content="Save edited record to DataBase"
                                 />)}
                             </Form>
-                            <Divider horizontal><h4>List of City of Sanctuar</h4></Divider>
+                            <Divider  horizontal><h4>List of City of Sanctuary</h4></Divider>
                             <ListForm listform={this.state.address} handleEdit={this.handleEdit} handleDeleteRow={this.handleDeleteRow} />
                             <Divider horizontal></Divider>
                         </GridColumn>
